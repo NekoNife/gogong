@@ -1,0 +1,26 @@
+void printTemp() {
+  unsigned long currentMillis = millis();
+
+  if (currentMillis - prevMillis > 2000) {
+    sensors_event_t event;
+    dht.temperature().getEvent(&event);
+    if (isnan(event.temperature)) {
+      Serial.println(F("Error reading temperature!"));
+    }
+    else {
+      Serial2.print(F("온도: "));
+      Serial2.print(event.temperature);
+      Serial2.print(F("°C "));
+    }
+    dht.humidity().getEvent(&event);
+    if (isnan(event.relative_humidity)) {
+      Serial.println(F("Error reading humidity!"));
+    }
+    else {
+      Serial2.print(F(" 습도: "));
+      Serial2.print(event.relative_humidity);
+      Serial2.println(F("%"));
+    }
+    prevMillis = currentMillis;
+  }
+}
